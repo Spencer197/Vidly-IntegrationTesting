@@ -1,0 +1,4 @@
+{
+  "jwtPrivateKey": "",
+  "db": "mongodb://localhost/vidly"//MongoDB connection string cut & pasted from db.js
+}
