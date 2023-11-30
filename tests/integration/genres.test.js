@@ -6,13 +6,13 @@ const mongoose = require('mongoose');
 let server;
 
 describe('/api/genres', () => {
-  beforeEach(() => { server = require('../../index'); })
-  afterEach(async () => { 
+  beforeEach(() => { server = require('../../index'); })//Starts server before each test
+  afterEach(async () => { //Closes server after each test
     server.close(); 
     await Genre.remove({});
   });
 
-  describe('GET /', () => {
+  describe('GET /', () => {//Test suite for getting all genres
     it('should return all genres', async () => {
       const genres = [
         { name: 'genre1' },
@@ -21,7 +21,7 @@ describe('/api/genres', () => {
       
       await Genre.collection.insertMany(genres);
 
-      const res = await request(server).get('/api/genres');
+      const res = await request(server).get('/api/genres');//Sends request to GET genres end point
       
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
