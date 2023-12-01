@@ -35,19 +35,18 @@ describe('/api/genres', () => {
       const genre = new Genre({ name: 'genre1' });
       await genre.save();
 
-      const res = await request(server).get('/api/genres/' + genre._id);
+      const res = await request(server).get('/api/genres/' + genre._id);//Call endpoint
 
       expect(res.status).toBe(200);
-      expect(res.body).toHaveProperty('name', genre.name);     
+      expect(res.body).toHaveProperty('name', genre.name);//Test that genre has valid name: 'genre1'     
     });
 
     it('should return 404 if invalid id is passed', async () => {
-      const res = await request(server).get('/api/genres/1');
-
+      const res = await request(server).get('/api/genres/1');//1 is an invalid genre ID
       expect(res.status).toBe(404);
     });
 
-    it('should return 404 if no genre with the given id exists', async () => {
+    it('should return 404 if no genre with the given id exists', async () => {//No genres needed for this test
       const id = mongoose.Types.ObjectId();
       const res = await request(server).get('/api/genres/' + id);
 
