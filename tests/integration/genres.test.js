@@ -1,6 +1,6 @@
 const request = require('supertest');
-const {Genre} = require('../../models/genre');
-const {User} = require('../../models/user');
+const {Genre} = require('../../models/genre');//Use Object Descructuring Systax to get Genre property
+const {User} = require('../../models/user');//Use Object Descructuring Systax to get User property
 const mongoose = require('mongoose');
 
 let server;
@@ -9,7 +9,7 @@ describe('/api/genres', () => {
   beforeEach(() => { server = require('../../index'); })//Starts server before each test
   afterEach(async () => { //Closes server after each test
     server.close(); 
-    await Genre.remove({});
+    await Genre.remove({});//Removes all documents in Genres collection after each test.
   });
 
   describe('GET /', () => {//Test suite for getting all genres
@@ -19,13 +19,13 @@ describe('/api/genres', () => {
         { name: 'genre2' },
       ];
       
-      await Genre.collection.insertMany(genres);
+      await Genre.collection.insertMany(genres);//insertMany() enables many documents to be entered into MongoDB
 
       const res = await request(server).get('/api/genres');//Sends request to GET genres end point
       
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
-      expect(res.body.some(g => g.name === 'genre1')).toBeTruthy();
+      expect(res.body.some(g => g.name === 'genre1')).toBeTruthy();//some() checks for object in an array (g=genre)
       expect(res.body.some(g => g.name === 'genre2')).toBeTruthy();
     });
   });
