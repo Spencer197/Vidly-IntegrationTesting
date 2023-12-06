@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
-const Customer = mongoose.model('Customer', new mongoose.Schema({
+const customerSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -16,9 +16,17 @@ const Customer = mongoose.model('Customer', new mongoose.Schema({
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 50
+    maxlength: 50,
+    unique: true  // Define unique index directly in the schema
   }
-}));
+});
+
+// Disable automatic index creation
+customerSchema.set('autoIndex', false);
+
+// Manually create indexes
+//const Customer = mongoose.model('Customer', customerSchema);
+customerSchema.index({ phone: 1 }, { unique: true });
 
 function validateCustomer(customer) {
   const schema = {
@@ -32,3 +40,4 @@ function validateCustomer(customer) {
 
 exports.Customer = Customer; 
 exports.validate = validateCustomer;
+exports.customerSchema = customerSchema;

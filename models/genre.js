@@ -10,6 +10,12 @@ const genreSchema = new mongoose.Schema({
   }
 });
 
+// Disable automatic index creation
+genreSchema.set('autoIndex', false);
+
+// Manually create indexes
+genreSchema.index({ name: 1 }, { unique: true });
+
 const Genre = mongoose.model('Genre', genreSchema);
 
 function validateGenre(genre) {

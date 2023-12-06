@@ -1,9 +1,10 @@
 const winston = require('winston');
-// require('winston-mongodb');
+require('winston-mongodb');
 require('express-async-errors');
 
+//Configure Winston
 module.exports = function() {
-  winston.handleExceptions(
+  winston.exceptions.handle(//handleExcptions depricated, updated with exceptions.handle()
     new winston.transports.Console({ colorize: true, prettyPrint: true }),
     new winston.transports.File({ filename: 'uncaughtExceptions.log' }));
   
@@ -11,9 +12,17 @@ module.exports = function() {
     throw ex;
   });
   
-  winston.add(winston.transports.File, { filename: 'logfile.log' });
-  // winston.add(winston.transports.MongoDB, { 
-  //   db: 'mongodb://localhost/vidly',
-  //   level: 'info'
-  // });  
-}
+  //Add file transport with a filename
+  winston.add(new winston.transports.File({ filename: 'logfile.log' }));//Added 'new' to winston.transports
+  //Add MongoDB transport
+  const mongoDBTransport = new winston.transports.MongoDB({ 
+    db: 'mongodb://localhost/vidly',
+    options: { useNewUrlParser: true, useUnifiedTopology: true },
+    level: 'info'
+  });
+
+  winston.add(mongoDBTransport);
+};
+
+// Export the configured logger
+module.exports = winston;

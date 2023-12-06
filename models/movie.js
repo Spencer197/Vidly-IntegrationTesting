@@ -2,7 +2,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const {genreSchema} = require('./genre');
 
-const Movie = mongoose.model('Movies', new mongoose.Schema({
+const movieSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -26,7 +26,13 @@ const Movie = mongoose.model('Movies', new mongoose.Schema({
     min: 0,
     max: 255
   }
-}));
+});
+
+// Disable automatic index creation
+movieSchema.set('autoIndex', false);
+
+// Manually create indexes
+movieSchema.index({ title: 1 }, { unique: true });
 
 function validateMovie(movie) {
   const schema = {
@@ -39,5 +45,5 @@ function validateMovie(movie) {
   return Joi.validate(movie, schema);
 }
 
-exports.Movie = Movie; 
+exports.Movie = mongoose.model('Movies', movieSchema); 
 exports.validate = validateMovie;

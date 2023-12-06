@@ -26,6 +26,12 @@ const userSchema = new mongoose.Schema({
   isAdmin: Boolean
 });
 
+// Disable automatic index creation
+userSchema.set('autoIndex', false);
+
+// Manually create indexes
+userSchema.index({ email: 1 }, { unique: true });
+
 userSchema.methods.generateAuthToken = function() { 
   const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'));
   return token;
